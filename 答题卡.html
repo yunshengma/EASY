@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>答题卡简版</title>
+	<style type="text/css">
+		*{margin:0;padding:0}html,body{width:100%;height:100%;position:relative}#content{position:absolute;width:90%;height:100%;left:10%;display:flex;flex-wrap:wrap;justify-content:space-between}#content div{background:gray;width:9%;height:9%;color:white;text-align:center}#content input{width:9%;height:9%;font-size:90px;text-align:center}#xuanze{position:absolute;top:0;left:0;width:10%}#panduan{position:absolute;top:80%;left:0;width:10%}span{color:red}#btn{position:absolute;top:30%;left:2.5%;width:5%;height:5%}#naMe{position:absolute;top:20%;left:2.5%;width:4%;height:5%}#naMe input{width:100%}
+	</style>
+</head>
+<body>
+	<div id = "content"></div>
+	<div id = "xuanze">选择题<br>	(请在这部分区域里<br>输入<span>大写的</span>A或者B或者C或者D)</div>
+	<div id = "panduan">判断题<br>(请在这部分区域里<br>输入<span>大写的</span>A或者B)</div>
+	<h6 id = "naMe">
+		答卷人<br><input type="" name="">
+	</h6>
+	<button id = "btn">提交</button>
+</body>
+<script type="text/javascript">
+	var content = document.getElementById("content");
+	var inp = document.querySelector("#naMe input");
+	var numT = 0;
+	var numD = 0;
+	for(var i = 0;i<50;i++){
+		createT();
+		createD()
+	};
+	function createT(){
+		numT++;
+		var div = document.createElement("div");
+		div.innerHTML = numT;
+		content.appendChild(div);
+		div.style.lineHeight = div.offsetHeight+"px";
+		if(numT == 40){
+			numT = 0;
+		}
+	};
+	function createD(){
+		numD++;
+		var input = document.createElement("input");
+		content.appendChild(input);
+		if(numD <= 40){
+			input.onkeyup = function(){
+				if(this.value.length==1){
+					this.value=this.value.replace(/[^A-D]/g,'');
+				}else{
+					this.value=this.value.replace(/[^M]/g,'');
+				}
+			}
+			input.onafterpaste = function(){
+				if(this.value.length==1){
+					this.value=this.value.replace(/[^A-D]/g,'');
+				}else{
+					this.value=this.value.replace(/[^M]/g,'');
+				}
+			}
+		}
+		else{
+			input.onkeyup = function(){
+				if(this.value.length==1){
+					this.value=this.value.replace(/[^A-B]/g,'');
+				}else{
+					this.value=this.value.replace(/[^M]/g,'');
+				}
+			}
+			input.onafterpaste = function(){
+				if(this.value.length==1){
+					this.value=this.value.replace(/[^A-B]/g,'');
+				}else{
+					this.value=this.value.replace(/[^M]/g,'');
+				}
+			}
+		}
+	};
+	window.onresize = function () {
+		var divs1 = document.querySelectorAll("#content div");
+		for(var i = 0;i<divs1.length;i++){
+			divs1[i].style.lineHeight = divs1[i].offsetHeight+"px";
+		}
+	};
+	function pdOk(){
+		var inputs1 = document.querySelectorAll("#content input");
+		for(var i = 0;i<inputs1.length;i++){
+			if(inputs1[i].value == ""){
+				return true;
+			}
+		}
+		return false;
+	};
+	var rightAnswer = ["A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A","A"];
+	var source = 0;
+	var wrongT1 = "";
+	var wrongT2 = "";
+	function pdRight(){
+		var inputs2 = document.querySelectorAll("#content input");
+		for(var i = 0;i<inputs2.length;i++){
+			var divs2 = document.querySelectorAll("#content div");
+			if(inputs2[i].value == rightAnswer[i]){
+				source += 2;
+				divs2[i].style.backgroundColor = "gray";
+			}else{
+				divs2[i].style.backgroundColor = "red";
+				if(i<40){
+					wrongT1 = wrongT1+(i+1)+" ";
+				}else{
+					wrongT2 = wrongT2+(i+1-40)+" ";
+				}
+				
+			}
+		}
+		alert(inp.value+"\n"+'你的分数是'+source+"\n"+"你下面的题目做错了"+"\n"+"选择题:"+wrongT1+"\n"+"判断题:"+wrongT2);
+		source = 0;
+		wrongT1 = "";
+		wrongT2 = "";
+	};
+
+	btn.onclick = function(){
+		if(pdOk()){
+			alert("您还没有做完哦!!!");
+		}else{
+			pdRight();
+		}
+	}
+</script>
+</html>
